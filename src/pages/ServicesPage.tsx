@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PersonCard from '../components/PersonCard';
 
@@ -8,6 +8,8 @@ interface ServicesPageProps {
 
 const ServicesPage: React.FC<ServicesPageProps> = ({ activeSection }) => {
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({});
+  const [isGetInTouchVisible, setIsGetInTouchVisible] = useState(false);
+  const getInTouchRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (activeSection && sectionRefs.current[activeSection]) {
@@ -17,6 +19,27 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ activeSection }) => {
       });
     }
   }, [activeSection]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsGetInTouchVisible(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    if (getInTouchRef.current) {
+      observer.observe(getInTouchRef.current);
+    }
+
+    return () => {
+      if (getInTouchRef.current) {
+        observer.unobserve(getInTouchRef.current);
+      }
+    };
+  }, []);
 
   const offerings = [
     {
@@ -228,14 +251,18 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ activeSection }) => {
 
 
       {/* Get in Touch Section */}
-      <section className="py-20 bg-gray-100 text-black">
+      <section ref={getInTouchRef} className="py-20 bg-gray-100 text-black overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-8 uppercase tracking-wide">Get in Touch</h2>
+          <h2 className={`text-3xl font-bold mb-8 uppercase tracking-wide transition-all duration-1000 ${isGetInTouchVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+            }`}>
+            Get in Touch
+          </h2>
 
           {/* Contact Information */}
           <div className="mb-12">
-            <p className="text-lg text-gray-700 mb-4">
-              Ready to optimize your performance? Let's discuss how data science can transform your training.
+            <p className={`text-lg text-gray-700 mb-4 transition-all duration-1000 delay-300 ${isGetInTouchVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+              }`}>
+              Ready to optimize your performance?<br />Let's discuss how data science can transform your training.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
