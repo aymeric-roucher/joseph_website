@@ -207,7 +207,7 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ activeSection }) => {
                       <img
                         src="/images/strava_logo-fi35603244x140.png"
                         alt="Strava logo"
-                        className="h-6 w-auto"
+                        className="h-12 w-auto"
                         loading="lazy"
                       />
                     )}
@@ -260,9 +260,13 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ activeSection }) => {
 
           {/* Contact Information */}
           <div className="mb-12">
+            <p className={`text-lg text-gray-700 mb-2 transition-all duration-1000 delay-300 ${isGetInTouchVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+              }`}>
+              Ready to optimize your performance?
+            </p>
             <p className={`text-lg text-gray-700 mb-4 transition-all duration-1000 delay-300 ${isGetInTouchVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
               }`}>
-              Ready to optimize your performance?<br />Let's discuss how data science can transform your training.
+              Let's discuss how data science can transform your training.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
